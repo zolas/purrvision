@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B016E6F205E0ABB003E33FD /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */; };
 		4B016E71205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */; };
 		9CB7A20F205DB5730070C5CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A20E205DB5730070C5CA /* AppDelegate.swift */; };
 		9CB7A211205DB5730070C5CA /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A210205DB5730070C5CA /* MediaViewController.swift */; };
@@ -16,6 +15,7 @@
 		9CB7A219205DB5740070C5CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7A217205DB5740070C5CA /* LaunchScreen.storyboard */; };
 		9CB7A224205DB5740070C5CA /* PurrVisionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A223205DB5740070C5CA /* PurrVisionTests.swift */; };
 		9CB7A22F205DB5740070C5CA /* PurrVisionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A22E205DB5740070C5CA /* PurrVisionUITests.swift */; };
+		9CB7A23D205E1C980070C5CA /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A23C205E1C980070C5CA /* Resnet50.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +36,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 		4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = GoogLeNetPlaces.mlmodel; sourceTree = "<group>"; };
 		9CB7A20B205DB5730070C5CA /* PurrVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PurrVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB7A20E205DB5730070C5CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 		9CB7A22A205DB5740070C5CA /* PurrVisionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurrVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB7A22E205DB5740070C5CA /* PurrVisionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurrVisionUITests.swift; sourceTree = "<group>"; };
 		9CB7A230205DB5740070C5CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9CB7A23C205E1C980070C5CA /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +81,7 @@
 		4B016E6D205E0AA8003E33FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */,
+				9CB7A23C205E1C980070C5CA /* Resnet50.mlmodel */,
 				4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */,
 			);
 			path = Models;
@@ -274,8 +274,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CB7A211205DB5730070C5CA /* MediaViewController.swift in Sources */,
-				4B016E6F205E0ABB003E33FD /* Resnet50.mlmodel in Sources */,
 				9CB7A20F205DB5730070C5CA /* AppDelegate.swift in Sources */,
+				9CB7A23D205E1C980070C5CA /* Resnet50.mlmodel in Sources */,
 				4B016E71205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

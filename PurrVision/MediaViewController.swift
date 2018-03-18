@@ -9,6 +9,7 @@
 import UIKit
 import os.log
 import CoreML
+import AVFoundation
 import Vision
 
 enum ToolBarButtons: Int {
@@ -30,10 +31,18 @@ class MediaViewController: UIViewController {
     private let toolBar = UIToolbar()
     private let toolBarButtons = ToolBarButtonDataSource(buttons: [.CameraButton, .SpaceButton, .PhotoButton])
     
+    private let session = AVCaptureSession()
+    private var previewLayer: AVCaptureVideoPreviewLayer!
+    private let captureQueue = DispatchQueue(label: "captureQueue")
+    var visionRequests = [VNRequest]()
+
+    private var previewView: UIView!
+
+    var recognitionThreshold : Float = 0.25
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     private func setup() {
@@ -41,6 +50,7 @@ class MediaViewController: UIViewController {
         setupTranslationLabel()
         setupImageView()
         setupImagePicker()
+        setupCamera()
     }
     
     private func setupToolbar() {
@@ -66,8 +76,8 @@ class MediaViewController: UIViewController {
                 buttonArray.append(toolBarButton)
             }
         }
-        // Toolbar buttons
 
+        // Toolbar buttons
         toolBar.setItems(buttonArray, animated: false)
         toolBar.isUserInteractionEnabled = true
         view.addSubview(toolBar)
@@ -113,6 +123,64 @@ class MediaViewController: UIViewController {
         imagePicker.allowsEditing = false
     }
     
+    private func setupCamera() {
+        guard let camera = AVCaptureDevice.default(for: .video) else {
+            // No camera available, only allow picking static images
+            return
+        }
+        do {
+            previewLayer = AVCaptureVideoPreviewLayer(session: session)
+            previewView.layer.addSublayer(previewLayer)
+            view.addSubview(previewView)
+            previewView.translatesAutoresizingMaskIntoConstraints = false
+            previewView.topAnchor.constraint(equalTo: translationLabel.bottomAnchor).isActive = true
+            previewView.bottomAnchor.constraint(equalTo: toolBar.topAnchor).isActive = true
+            previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+
+            let cameraInput = try AVCaptureDeviceInput(device: camera)
+            
+            let videoOutput = AVCaptureVideoDataOutput()
+            videoOutput.setSampleBufferDelegate(self, queue: captureQueue)
+            videoOutput.alwaysDiscardsLateVideoFrames = true
+            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
+            session.sessionPreset = .cif352x288
+            
+            session.addInput(cameraInput)
+            session.addOutput(videoOutput)
+            
+            let conn = videoOutput.connection(with: .video)
+            conn?.videoOrientation = .portrait
+            
+            session.startRunning()
+
+            // set up the vision model
+            guard let resNet50Model = try? VNCoreMLModel(for: Resnet50().model) else {
+                fatalError("Could not load model")
+            }
+            // set up the request using our vision model
+            let classificationRequest = VNCoreMLRequest(model: resNet50Model, completionHandler: handleClassifications)
+            classificationRequest.imageCropAndScaleOption = .centerCrop
+            visionRequests = [classificationRequest]
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+
+    }
+    
+    func handleClassifications(request: VNRequest, error: Error?) {
+        if let theError = error {
+            print("Error: \(theError.localizedDescription)")
+            return
+        }
+        guard let results = request.results as? [VNClassificationObservation],
+            let topResult = results.first else {
+                fatalError("unexpected result type from VNCoreMLRequest")
+        }
+        
+        self.updateTranslation(text: topResult.identifier, confidence: topResult.confidence)
+    }
+    
     private func switchMediaInput(cameraInput: Bool) {
         guard let toolBarItems = toolBar.items else {
             os_log("No toolbar items found when switching media input.")
@@ -126,6 +194,13 @@ class MediaViewController: UIViewController {
             if toolBarButtons.buttons[index] == .CameraButton {
                 button.isEnabled = !cameraInput
             }
+        }
+        previewView?.isHidden = !cameraInput
+        
+        if cameraInput {
+            session.startRunning()
+        } else {
+            session.stopRunning()
         }
     }
     
@@ -144,7 +219,30 @@ class MediaViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+}
+
+extension MediaViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+        
+        connection.videoOrientation = .portrait
+        
+        var requestOptions:[VNImageOption: Any] = [:]
+        
+        if let cameraIntrinsicData = CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, nil) {
+            requestOptions = [.cameraIntrinsics: cameraIntrinsicData]
+        }
+        
+        // for orientation see kCGImagePropertyOrientation
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .upMirrored, options: requestOptions)
+        do {
+            try imageRequestHandler.perform(self.visionRequests)
+        } catch {
+            print(error)
+        }
     }
 }
 
@@ -195,12 +293,16 @@ extension MediaViewController {
                     fatalError("unexpected result type from VNCoreMLRequest")
             }
             
-            // Update UI on main queue
-            let article = (self?.vowels.contains(topResult.identifier.first!))! ? "an" : "a"
-            DispatchQueue.main.async { [weak self] in
-                self?.translationLabel.text = "\(Int(topResult.confidence * 100))% it's \(article) \(topResult.identifier)"
-            }
+            self?.updateTranslation(text: topResult.identifier, confidence: topResult.confidence)
         }
         return request
+    }
+    
+    func updateTranslation(text: String, confidence: VNConfidence) {
+        // Update UI on main queue
+        let article = (self.vowels.contains(text.first!)) ? "an" : "a"
+        DispatchQueue.main.async { [weak self] in
+            self?.translationLabel.text = "\(Int(confidence * 100))% it's \(article) \(text)"
+        }
     }
 }
