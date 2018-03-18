@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B016E6F205E0ABB003E33FD /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */; };
+		4B016E71205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */; };
 		9CB7A20F205DB5730070C5CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A20E205DB5730070C5CA /* AppDelegate.swift */; };
-		9CB7A211205DB5730070C5CA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A210205DB5730070C5CA /* ViewController.swift */; };
+		9CB7A211205DB5730070C5CA /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7A210205DB5730070C5CA /* MediaViewController.swift */; };
 		9CB7A214205DB5740070C5CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7A212205DB5730070C5CA /* Main.storyboard */; };
 		9CB7A216205DB5740070C5CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7A215205DB5740070C5CA /* Assets.xcassets */; };
 		9CB7A219205DB5740070C5CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7A217205DB5740070C5CA /* LaunchScreen.storyboard */; };
@@ -34,9 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
+		4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = GoogLeNetPlaces.mlmodel; sourceTree = "<group>"; };
 		9CB7A20B205DB5730070C5CA /* PurrVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PurrVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB7A20E205DB5730070C5CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9CB7A210205DB5730070C5CA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9CB7A210205DB5730070C5CA /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		9CB7A213205DB5730070C5CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9CB7A215205DB5740070C5CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CB7A218205DB5740070C5CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -74,6 +78,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B016E6D205E0AA8003E33FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4B016E6E205E0ABB003E33FD /* Resnet50.mlmodel */,
+				4B016E70205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		9CB7A202205DB5730070C5CA = {
 			isa = PBXGroup;
 			children = (
@@ -97,8 +110,9 @@
 		9CB7A20D205DB5730070C5CA /* PurrVision */ = {
 			isa = PBXGroup;
 			children = (
+				4B016E6D205E0AA8003E33FD /* Models */,
 				9CB7A20E205DB5730070C5CA /* AppDelegate.swift */,
-				9CB7A210205DB5730070C5CA /* ViewController.swift */,
+				9CB7A210205DB5730070C5CA /* MediaViewController.swift */,
 				9CB7A212205DB5730070C5CA /* Main.storyboard */,
 				9CB7A215205DB5740070C5CA /* Assets.xcassets */,
 				9CB7A217205DB5740070C5CA /* LaunchScreen.storyboard */,
@@ -259,8 +273,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CB7A211205DB5730070C5CA /* ViewController.swift in Sources */,
+				9CB7A211205DB5730070C5CA /* MediaViewController.swift in Sources */,
+				4B016E6F205E0ABB003E33FD /* Resnet50.mlmodel in Sources */,
 				9CB7A20F205DB5730070C5CA /* AppDelegate.swift in Sources */,
+				4B016E71205E0AC7003E33FD /* GoogLeNetPlaces.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
